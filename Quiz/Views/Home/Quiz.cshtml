@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Quiz.Models.Question>
+<!---------------------------------------- stepper navbar ------------------------------------------->
+<section class="stepper">
+    <h1 class="select">Informations</h1>
+    <h1>Quiz</h1>
+    <h1>Résultats</h1>
+</section>
+
+<!---------------------------------------- stepper navbar ------------------------------------------->
+<!------------------------------------- start Préambule section  ------------------------>
+
+<section class="Préambule">
+
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Natus cupiditate, nostrum eius modi inventore iure? Quos fugiat quis
+        commodi quo voluptate libero. Molestias excepturi assumenda vitae obcaecati eum deserunt eaque.
+    </p>
+
+    <hr />
+    <p>
+
+    </p>
+</section>
+
+<button class="start-btn">Demarer le Quiz</button>
+<!------------------------------------- end  Préambule  section  ------------------------>
+
+<section class="questionnaire">
+    <div class="progress">
+        <h3><span class="question-number">1</span> /@Model.Count()</h3>
+        <div class="progress__bar">
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <div class="animation">
+        <h1 class="question"></h1>
+
+        <div class="answer-inputs"></div>
+
+        <div class="btn-container">
+            <button  class="previous">Précédent</button>
+            <button class="next">Suivant</button>
+        </div>
+    </div>
+</section>
+
+<script>
+        var questions = @Html.Raw( Json.Serialize(Model));
+
+    console.log(questions);
+</script>
