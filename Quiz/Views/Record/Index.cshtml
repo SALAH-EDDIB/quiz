@@ -9,16 +9,17 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover ">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Score)
             </th>
-            <th></th>
+
             <th>
                 @Html.DisplayNameFor(model => model.User.UserName)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>

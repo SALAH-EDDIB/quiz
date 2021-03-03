@@ -169,6 +169,8 @@ namespace Quiz.Controllers
             List<Answer> answers = new List<Answer>();
             answers.Add(new Answer());
             answers.Add(new Answer());
+            answers.Add(new Answer());
+            answers.Add(new Answer());
             return answers;
 
 

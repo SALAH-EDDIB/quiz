@@ -12,7 +12,8 @@ const progressBar = document.querySelector(".bar");
 const questionNumber = document.querySelector(".question-number");
 const animateBox = document.querySelector(".animation");
 const result = document.querySelector(".Préambule h1");
-const resultMessage = document.querySelectorAll(".Préambule p");
+const resultBox = document.querySelector(".results");
+const resultMessage = document.querySelector(".Préambule p");
 
 // ?  :::::::::::::::::::      Event Listener
 
@@ -36,17 +37,22 @@ animateBox.addEventListener("input", (e) => {
             nextBtn.disabled = true;
         }
     } else {
-        var trueAnswer = questions[currentQuestionIndex].answers.find(a => a.isCorrect == true);
-        if (trueAnswer.answerText == input.id) {
 
-            if (currentQuestionIndex != answerIndex) {
-                answers += 1;
-                answerIndex = currentQuestionIndex;
-            }
+
+        answers[currentQuestionIndex] = input.id;
+
+        //var trueAnswer = questions[currentQuestionIndex].answers.find(a => a.isCorrect == true);
+
+        //if (trueAnswer.answerText == input.id) {
+
+        //    if (currentQuestionIndex != answerIndex) {
+        //        answers += 1;
+        //        answerIndex = currentQuestionIndex;
+        //    }
             
-        }
+        //}
         
-        console.log(answers);
+        //console.log(answers);
         nextBtn.disabled = false;
     }
 });
@@ -105,8 +111,8 @@ function showQuestion(question) {
     answers.forEach((answer) => {
         answerInputs.innerHTML += `
                 <div class="form-check ml-5 ">
-                    <input type="radio"  class="form-check-input "  name="${question.Id}" id="${answer.answerText}">
-                    <label   class="form-check-label h4 ml-2 pb-2 " style="color:#787878;"  for="${answer.answerText}">
+                    <input type="radio"  class="form-check-input "  name="${question.Id}" id="${answer.id}">
+                    <label   class="form-check-label h4 ml-2 pb-2 " style="color:#787878;"  for="${answer.id}">
                     <span>${answer.answerText}</span>
                      </label>
                 </div>`;
@@ -130,10 +136,27 @@ function transition(frame) {
     });
 }
 
-let answers = 0;
+let answers = [];
 
 function Results() {
 
+    let score = 0;
+
+
+
+    for (var i = 0; i < questions.length; i++) {
+
+        var trueAnswer = questions[i].answers.find(a => a.isCorrect == true);
+
+        if (trueAnswer.id == answers[i]) {
+            score++ ;
+        }
+
+
+
+    }
+
+    console.log(score);
 
      $.ajax({
      url: '/Record/Create',
@@ -142,7 +165,7 @@ function Results() {
 
      data:{
 
-    score : answers 
+         score: score 
 
      },
      success: function (data) {
@@ -154,24 +177,72 @@ function Results() {
  });
    
 
-    showResult();
+    showResult(score);
 
 
 }
 
-function showResult() {
+function showResult(score) {
     stepper[1].classList.remove("select");
     stepper[2].classList.add("select");
     testBtn.style.display = "block";
+    testBtn.removeEventListener("click", startTest)
     questionnaire.style.display = "none";
     Préambule.style.display = "block";
-    testBtn.textContent = " Recommencer le Quiz";
+    testBtn.textContent = " voir le résultat ";
+    resultMessage.innerHTML = score + "/" + questions.length;
+
+    resultMessage.style.color = score < questions.length / 2 ? "#d63031" : "#8EFA99"  ;
+    resultMessage.style.fontSize = "50px";
+    resultMessage.style.fontWeight = "bold";
     testBtn.addEventListener("click", () => {
-        window.location.reload();
+        for (var i = 0; i < questions.length; i++) {
+
+            testBtn.textContent = " Recommencer le test";
+            testBtn.addEventListener("click", () => {
+                window.location.reload();
+            });
+            var trueAnswer = questions[i].answers.find(a => a.isCorrect == true);
+
+            if (trueAnswer.id == answers[i]) {
+
+                resultBox.innerHTML += `<section class="Préambule" style="background-color: #8EFA99;" >
+                                         <p style=" font-weight : bold; font-size : 24px"; >
+                                           Q-${i + 1}      ${questions[i].questionText}
+                                         </p>
+
+  
+                                         <p style=" font-weight : bold; font-size : 20px"; >
+                                            -${trueAnswer.answerText}
+
+                                         </p>
+                                        </section>`
+
+            } else {
+
+                resultBox.innerHTML += `<section class="Préambule" style="background-color: #F59C8C;" >
+                                         <p style=" font-weight : bold; font-size : 24px"; >
+                                           Q-${i + 1}       ${questions[i].questionText}
+                                         </p>
+
+  
+                                         <p style=" font-weight : bold; font-size : 20px"; >
+                                            -${trueAnswer.answerText}
+
+                                         </p>
+                                        </section>`
+
+            }
+
+
+
+        }
+        
+
     });
 
 
-    result.innerText = "Résultats";
+   
 
 }
 

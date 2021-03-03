@@ -113,7 +113,7 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: all .3s ease;
-    margin: 10px auto 50px;
+    margin: 10px auto 100px;
     margin-left: 50%;
     transform: translateX(-50%);
 }
@@ -188,7 +188,7 @@ body {
 .questionnaire {
     width: 80%;
     border: 1px solid #bebebe;
-    margin: 20px auto;
+    margin: 20px auto  ;
     border-radius: 4px;
     display: none;
     margin-bottom: 50px;
@@ -215,6 +215,7 @@ body {
         background-color: #f7f7f7;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
+        
     }
 
         .questionnaire .progress h3 {
