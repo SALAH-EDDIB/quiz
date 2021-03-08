@@ -62,8 +62,28 @@ animateBox.addEventListener("input", (e) => {
 let currentQuestionIndex = 0;
 let answerIndex;
 
+var interval;
 
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    interval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
 
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.text(minutes + ":" + seconds);
+
+        if (timer == 0) {
+
+            Results();
+
+        } else {
+            timer--;
+        }
+    }, 1000);
+}
 
 
 function startTest() {
@@ -76,6 +96,10 @@ function startTest() {
     nextBtn.disabled = true;
     showQuestion(questions[currentQuestionIndex]);
     folowProgress(currentQuestionIndex);
+
+    var fiveMinutes = 60 * 5,
+        display = $('#time');
+    startTimer(fiveMinutes, display);
 }
 
 nextBtn.addEventListener("click", () => {
@@ -138,11 +162,11 @@ function transition(frame) {
 
 let answers = [];
 
+let score = 0;
+
 function Results() {
 
-    let score = 0;
-
-
+    clearInterval(interval);
 
     for (var i = 0; i < questions.length; i++) {
 
@@ -199,7 +223,9 @@ function showResult(score) {
         for (var i = 0; i < questions.length; i++) {
 
             testBtn.textContent = " Recommencer le test";
+            
             testBtn.addEventListener("click", () => {
+                resultBox.innerHTML = '';
                 window.location.reload();
             });
             var trueAnswer = questions[i].answers.find(a => a.isCorrect == true);
